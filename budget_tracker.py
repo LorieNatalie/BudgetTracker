@@ -49,4 +49,16 @@ def add_transaction():
     ''',(date_str, t_type, category, amount))
     conn.commit()
     print(f"{t_type.capitalize()} of R{amount} in category '{category}' added.\n")
-    
+
+    def view_transactions():
+        cursor.execute('SELECT * FROM  Transactions ORDER BY date DESC')
+        rows = cursor.fetchall()
+        if not rows:
+            print("\nNo transactions found.\n")
+            return
+        print("\nAll Transactions:")
+        print(f"{'Date':20} | {'Type':8} | {'Category':15} | {'Amount':10}")
+        print("-" * 65)
+        for row in rows:
+            print(f"{row[1]:20} | {row[2]:8} | {row[3]:15} | ${row[4]:10.2f}")
+    print()
