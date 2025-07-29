@@ -29,5 +29,17 @@ conn.commit()
 def add_transaction():
     while True:
         t_type = input("Enter transaction type('inome' or 'expense':)").strip().lower()
-        if
-
+        if t_type in ['income', 'expense']:
+            break
+        else:
+            print("Please enter 'Income' or 'Expense' ")
+    category = input("Enter category").strip()  
+    while True:
+        try:
+            amount = float(input("Enter amount: R"))  
+            if amount <= 0:
+                raise ValueError
+            break
+        except ValueError
+            print("Please enter a valid amount.")
+    date_str = datetime.now()        
