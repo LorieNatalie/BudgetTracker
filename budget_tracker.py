@@ -14,12 +14,25 @@ db_path = os.path.join(folder_name,'budget.db')
 conn = sqlite3.connect(db_path)
 cursor = conn.cursor()
 
+# Drop existing table and recreate with correct schema
+cursor.execute('DROP TABLE IF EXISTS Transactions')
+cursor.execute('''
+CREATE TABLE Transactions (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    date TEXT,
+    type TEXT,
+    category TEXT,
+    amount REAL
+)
+''')
+conn.commit()
+
 #Creating the transactional table
 cursor.execute('''
 CREATE TABLE IF NOT EXISTS Transactions(
                id INTEGER PRIMARY KEY AUTOINCREMENT,
                date TEXT,
-               type TEXT,       'income oe expense'
+               type TEXT,       'income or expense'
                category TEXT,
                amount REAL
                )
@@ -28,12 +41,12 @@ conn.commit()
 
 def add_transaction():
     while True:
-        t_type = input("Enter transaction type('inome' or 'expense':)").strip().lower()
+        t_type = input("Enter transaction type('income' or 'expense'): ").strip().lower()
         if t_type in ['income', 'expense']:
             break
         else:
-            print("Please enter 'Income' or 'Expense' ")
-    category = input("Enter category").strip()  
+            print("Please enter 'Income' or 'Expense': ")
+    category = input("Enter category: ").strip()  
     while True:
         try:
             amount = float(input("Enter amount: R"))  
@@ -43,12 +56,10 @@ def add_transaction():
         except ValueError:
             print("Please enter a valid amount.")
     date_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    cursor.execute('''
-    INSERT INTO Transactions (date, type, category, amount)
-    VALUE (?, ?, ?, ?)               
-    ''',(date_str, t_type, category, amount))
+    cursor.execute('INSERT INTO Transactions (date, type, category, amount) VALUES (?, ?, ?, ?)', (date_str, t_type, category, amount))
     conn.commit()
     print(f"{t_type.capitalize()} of R{amount} in category '{category}' added.\n")
+
 
 def view_transactions():
     cursor.execute('SELECT * FROM  Transactions ORDER BY date DESC')
