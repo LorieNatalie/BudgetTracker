@@ -10,3 +10,7 @@ if not os.path.exists(folder_name):
 #path to the database
 db_path = os.path.join(folder_name,'budget.db')
 
+#Connect to the database
+conn = sqlite3.connect(db_path)
+cursor = conn.cursor()
+
