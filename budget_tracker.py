@@ -40,6 +40,13 @@ def add_transaction():
             if amount <= 0:
                 raise ValueError
             break
-        except ValueError
+        except ValueError:
             print("Please enter a valid amount.")
-    date_str = datetime.now()        
+    date_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    cursor.execute('''
+    INSERT INTO Transactions (date, type, category, amount)
+    VALUE (?, ?, ?, ?)               
+    ''',(date_str, t_type, category, amount))
+    conn.commit()
+    print(f"{t_type.capitalize()} of R{amount} in category '{category}' added.\n")
+    
