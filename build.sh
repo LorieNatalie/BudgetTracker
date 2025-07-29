@@ -15,7 +15,8 @@ python3 budget_tracker.py
 # Deactivate after running
 deactivate
 
-
+#Deleting database
+rm budget_data/budget.db
 
 #Automate Setup
 Make it executable:
