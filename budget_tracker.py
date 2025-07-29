@@ -14,3 +14,20 @@ db_path = os.path.join(folder_name,'budget.db')
 conn = sqlite3.connect(db_path)
 cursor = conn.cursor()
 
+#Creating the transactional table
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS Transactions(
+               id INTEGER PRIMARY KEY AUTOINCREMENT,
+               date TEXT,
+               type TEXT,       'income oe expense'
+               category TEXT,
+               amount REAL
+               )
+  ''')
+conn.commit()
+
+def add_transaction():
+    while True:
+        t_type = input("Enter transaction type('inome' or 'expense':)").strip().lower()
+        if
+
