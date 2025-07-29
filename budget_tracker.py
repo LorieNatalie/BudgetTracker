@@ -50,15 +50,27 @@ def add_transaction():
     conn.commit()
     print(f"{t_type.capitalize()} of R{amount} in category '{category}' added.\n")
 
-    def view_transactions():
-        cursor.execute('SELECT * FROM  Transactions ORDER BY date DESC')
-        rows = cursor.fetchall()
-        if not rows:
-            print("\nNo transactions found.\n")
-            return
-        print("\nAll Transactions:")
-        print(f"{'Date':20} | {'Type':8} | {'Category':15} | {'Amount':10}")
-        print("-" * 65)
-        for row in rows:
-            print(f"{row[1]:20} | {row[2]:8} | {row[3]:15} | ${row[4]:10.2f}")
+def view_transactions():
+    cursor.execute('SELECT * FROM  Transactions ORDER BY date DESC')
+    rows = cursor.fetchall()
+    if not rows:
+        print("\nNo transactions found.\n")
+        return
+    print("\nAll Transactions:")
+    print(f"{'Date':20} | {'Type':8} | {'Category':15} | {'Amount':10}")
+    print("-" * 65)
+    for row in rows:
+        print(f"{row[1]:20} | {row[2]:8} | {row[3]:15} | ${row[4]:10.2f}")
     print()
+
+def show_summary():
+    cursor.execute("SELECT SUM(amount) FROM Transactions WHERE type='income'")
+    total_income = cursor.fetchone()[0] or 0
+    cursor.execute("SELECT SUM(amount) FROM Transactions WHERE type='expense'")
+    total_expense = cursor.fetchone()[0] or 0
+    balance = total_income - total_expense
+    print("\n--- Budget Summary ---")
+    print(f"Total Income: R{total_income:.2f}")
+    print(f"Total Expenses: R{total_expense:.2f}")
+    print(f"Current Balance: R{balance:.2f}\n")
+
